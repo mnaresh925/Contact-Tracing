@@ -22,7 +22,7 @@ public with sharing class CTLocationTractingController {
                 Order by Visit_Date__c Desc];
     }
     /**
-     * return location tracting records that matches locationsIds 
+     * return location tracing records that matches locationsIds 
      * and person health status is green
      */
     
@@ -36,4 +36,41 @@ public with sharing class CTLocationTractingController {
                 Order by Visit_Date__c Desc
                ];
     }
+
+    /**
+    * return the duplicate Location tracking records
+    */
+    public static List<Location_Tracing__c> checkDuplicates(List<Location_Tracing__c> locationTraces){
+        Set<Id> locationids = new Set<Id>();
+        Set<Id> personids = new Set<Id>();
+        List<Location_Tracing__c> duplicateTraces = new List<Location_Tracing__c>();
+        List<Location_Tracing__c> exisitingTraces = new List<Location_Tracing__c>();
+        Map<ID, Set<Id>> locationMap = new Map<ID, Set<Id>>();
+        for(Location_Tracing__c trace:locationTraces){
+            locationids.add(trace.Location__c);
+            personids.add(trace.Person__c);
+            if(!locationMap.containsKey(trace.Location__c)){
+                locationMap.put(trace.Location__c, new Set<Id>());
+            }
+                locationMap.get(trace.Location__c).add(trace.person__c);          
+    
+        }
+        if(locationids.size() > 0 || personids.size() > 0){
+            exisitingTraces = [SELECT Id, Name, Person__c, Location__c, Visit_Date__c 
+                               FROM Location_Tracing__c 
+                               Where Location__c IN :locationids AND
+                                     Person__c  IN :personids
+                               WITH SECURITY_ENFORCED];
+        }
+        if(exisitingTraces !=null && exisitingTraces.size() > 0){
+            for(Location_Tracing__c eTrace:exisitingTraces){
+                if(locationMap.containsKey(eTrace.Location__c) &&
+                        locationMap.get(etrace.Location__c).contains(eTrace.Person__c)){
+                    duplicateTraces.add(eTrace);
+                }
+            }        
+        }
+        return duplicateTraces;
+    }
+
 }
