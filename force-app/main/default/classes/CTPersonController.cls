@@ -4,6 +4,6 @@ public with sharing class CTPersonController {
     public static String getToken(String mobileNumber){
         Blob targetBlob = Blob.valueOf('MobileNumber');
         Blob hash = Crypto.generateDigest('MD5', targetBlob);
-        return EncodingUtil.convertToHex(hash);
+        return EncodingUtil.base64Encode(hash);
     }
 }
