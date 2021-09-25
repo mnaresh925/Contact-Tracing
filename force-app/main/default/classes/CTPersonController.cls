@@ -48,4 +48,12 @@ public with sharing class CTPersonController {
 
     }
 
+    public static Map<String,Integer> getHealthStatusCount(){
+        Map<String,Integer> healthStatusCount = new Map<String,Integer>(); 
+        for(AggregateResult healthstatus:[SELECT Health_Status__c, Count(Id) statusCount FROM Person__c WITH SECURITY_ENFORCED GROUP BY Health_Status__c]){
+            healthStatusCount.put((string)healthstatus.get('Health_Status__c'), (Integer)healthstatus.get('statusCount'));
+        }    
+        return healthStatusCount;
+    }
+
 }
