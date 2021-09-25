@@ -47,4 +47,12 @@ public with sharing class CTLocationController {
             return null;
         }
     }
+
+    public static Map<String,Integer> getStatusCount(){
+        Map<String,Integer> numberOfLocation = new Map<String,Integer>();
+        for(AggregateResult ar:[SELECT Status__c ,count(id) statusCount FROM Location__c with SECURITY_ENFORCED group by Status__c ]){
+            numberOfLocation.put((String.valueOf(ar.get('Status__c'))),(Integer)ar.get('statusCount'));
+        }
+        return numberOfLocation;
+    }
 }
