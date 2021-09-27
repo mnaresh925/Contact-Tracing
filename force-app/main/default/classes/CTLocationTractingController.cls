@@ -16,7 +16,7 @@ public with sharing class CTLocationTractingController {
     public static List<Location_Tracing__c> getLocationsByPersonIds(Set<Id> personIds){
         return [SELECT Id, Name, Person__c, Location__c, Visit_Date__c 
                 FROM Location_Tracing__c 
-                Where Person__c =:personIds AND
+                Where Person__c IN:personIds AND
                 Visit_Date__c = LAST_N_DAYS:10
                 WITH SECURITY_ENFORCED
                 Order by Visit_Date__c Desc];
