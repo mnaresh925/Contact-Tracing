@@ -56,4 +56,27 @@ public with sharing class CTPersonController {
         return healthStatusCount;
     }
 
+    public static set<Id> getCohabitants(set<Id> people,set<Id> alreadyProcessed){
+        List<String> healthStatus = new List<String>{'Red','Orange'};
+        List<People_Tracing__c> cohabitantsList =[SELECT Id, Name, Person_1__c, Person_2__c 
+                                                  FROM People_Tracing__c where 
+                                                 (Person_1__c IN : people OR Person_2__c IN : people) AND 
+                                                 (Person_1__r.Health_Status__c NOT IN : healthStatus OR Person_2__r.Health_Status__c NOT IN :healthStatus) AND
+                                                  Contact_Type__c = 'Cohabitant'
+                                                  WITH SECURITY_ENFORCED
+                                                ];
+        set<Id> cohabitants = new set<Id>();
+        for(People_Tracing__c pt: cohabitantsList){
+            if(people.contains(pt.Person_1__c)){
+                cohabitants.add(pt.Person_2__c);
+                alreadyProcessed.add(pt.Person_2__c);
+            }
+            if(people.contains(pt.Person_2__c)){
+                cohabitants.add(pt.Person_1__c);
+                alreadyProcessed.add(pt.Person_1__c);
+            }
+        }
+        return cohabitants;
+    }
+
 }
