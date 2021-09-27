@@ -67,16 +67,85 @@ public with sharing class CTPersonController {
                                                 ];
         set<Id> cohabitants = new set<Id>();
         for(People_Tracing__c pt: cohabitantsList){
-            if(people.contains(pt.Person_1__c)){
+            if(people.contains(pt.Person_1__c) && !alreadyProcessed.contains(pt.Person_2__c)){
                 cohabitants.add(pt.Person_2__c);
                 alreadyProcessed.add(pt.Person_2__c);
             }
-            if(people.contains(pt.Person_2__c)){
+            if(people.contains(pt.Person_2__c) && !alreadyProcessed.contains(pt.Person_1__c)){
                 cohabitants.add(pt.Person_1__c);
                 alreadyProcessed.add(pt.Person_1__c);
             }
         }
         return cohabitants;
+    }
+
+    public static set<Id> getPrimaryContacts(set<Id> people,set<Id> alreadyProcessed){
+        List<String> healthStatus = new List<String>{'Red','Orange'};
+        List<People_Tracing__c> primaryContactList =[SELECT Id, Name, Person_1__c, Person_2__c 
+                                                  FROM People_Tracing__c where 
+                                                 (Person_1__c IN : people OR Person_2__c IN : people) AND 
+                                                 (Person_1__r.Health_Status__c NOT IN : healthStatus OR Person_2__r.Health_Status__c NOT IN :healthStatus) AND
+                                                  Contact_Type__c = 'Other'
+                                                  WITH SECURITY_ENFORCED
+                                                ];
+        set<Id> primaryContacts = new set<Id>();
+        for(People_Tracing__c pt: primaryContactList){
+            if(people.contains(pt.Person_1__c) && !alreadyProcessed.contains(pt.Person_2__c)){
+                primaryContacts.add(pt.Person_2__c);
+                alreadyProcessed.add(pt.Person_2__c);
+            }
+            if(people.contains(pt.Person_2__c) && !alreadyProcessed.contains(pt.Person_1__c)){
+                primaryContacts.add(pt.Person_1__c);
+                alreadyProcessed.add(pt.Person_1__c);
+            }
+        }
+        return primaryContacts;
+    }
+
+    public static set<Id> getNeighbours(set<Id> people,set<Id> alreadyProcessed){
+        List<String> healthStatus = new List<String>{'Red','Orange','Yellow'};
+        List<People_Tracing__c> neighbourList =[SELECT Id, Name, Person_1__c, Person_2__c 
+                                                  FROM People_Tracing__c where 
+                                                 (Person_1__c IN : people OR Person_2__c IN : people) AND 
+                                                 (Person_1__r.Health_Status__c NOT IN : healthStatus OR Person_2__r.Health_Status__c NOT IN :healthStatus) AND
+                                                  Contact_Type__c = 'Neighbour'
+                                                  WITH SECURITY_ENFORCED
+                                                ];
+        set<Id> neighbours = new set<Id>();
+        for(People_Tracing__c pt: neighbourList){
+            if(people.contains(pt.Person_1__c) && !alreadyProcessed.contains(pt.Person_2__c)){
+                neighbours.add(pt.Person_2__c);
+                alreadyProcessed.add(pt.Person_2__c);
+            }
+            if(people.contains(pt.Person_2__c) && !alreadyProcessed.contains(pt.Person_1__c)){
+                neighbours.add(pt.Person_1__c);
+                alreadyProcessed.add(pt.Person_1__c);
+            }
+        }
+        return neighbours;
+    }
+
+    public static set<Id> getSecondaryContacts(set<Id> people,set<Id> alreadyProcessed){
+        List<String> healthStatus = new List<String>{'Red','Orange'};
+        List<People_Tracing__c> secondaryContactList =[SELECT Id, Name, Person_1__c, Person_2__c 
+                                                  FROM People_Tracing__c where 
+                                                 (Person_1__c IN : people OR Person_2__c IN : people) AND 
+                                                 (Person_1__r.Health_Status__c NOT IN : healthStatus OR Person_2__r.Health_Status__c NOT IN :healthStatus) AND
+                                                  Contact_Type__c = 'Other'
+                                                  WITH SECURITY_ENFORCED
+                                                ];
+        set<Id> secondaryContacts = new set<Id>();
+        for(People_Tracing__c pt: secondaryContactList){
+            if(people.contains(pt.Person_1__c) && !alreadyProcessed.contains(pt.Person_2__c)){
+                secondaryContacts.add(pt.Person_2__c);
+                alreadyProcessed.add(pt.Person_2__c);
+            }
+            if(people.contains(pt.Person_2__c) && !alreadyProcessed.contains(pt.Person_1__c)){
+                secondaryContacts.add(pt.Person_1__c);
+                alreadyProcessed.add(pt.Person_1__c);
+            }
+        }
+        return secondaryContacts;
     }
 
 }
