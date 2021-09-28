@@ -29,7 +29,7 @@ public with sharing class CTLocationTractingController {
     public static List<Location_Tracing__c> getLocationsByLocationIds(Set<Id> locationIds){
         return [SELECT Id, Name, Person__c, Location__c, Visit_Date__c 
                 FROM Location_Tracing__c 
-                Where Location__c =:locationIds AND
+                Where Location__c IN:locationIds AND
                 Visit_Date__c = LAST_N_DAYS:10 AND
                 Person__r.Health_Status__c = 'Green'
                 WITH SECURITY_ENFORCED
