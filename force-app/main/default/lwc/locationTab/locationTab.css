@@ -11,3 +11,66 @@
     padding: 1rem 1rem 2rem 1rem;
     background: lightblue;
 }
+
+.card-container{
+    padding-bottom: 2rem;
+    flex-direction: column;
+    border-radius: 2rem;
+    box-shadow: 0 2px 16px cadetblue;
+    width: 560px;
+    margin-top: -2rem;
+}
+.header-panel{
+    background-color: #dddbda;
+    width: 560px;
+    border-radius: 2rem 2rem 0 0;
+}
+.sub-header-panel{
+    width: 560px;    
+}
+
+.health-header {
+    font-size: medium;
+    font-weight: 600;
+    padding: 16px 12px;
+    border-radius: 2rem 2rem 0 0;
+}
+
+.Red {
+    background: red;
+}
+
+.Green {
+    background: green;
+}
+
+.Yellow {
+    background: #baba00;
+}
+
+.Orange {
+    background: orange;
+}
+
+.subheader-row {
+    background: #f3f2f2;
+    display: flex;
+    padding: 8px 4px;
+}
+
+.row-item {
+    flex: 1 1 auto;
+    margin: 0px 8px;
+}
+
+.body {
+    margin-top: 1rem;
+    width: 560px;
+    padding: 0.5rem;
+}
+
+
+
+
+
+

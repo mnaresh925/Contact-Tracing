@@ -9,6 +9,7 @@ public with sharing class CTLocationTabController {
         locinf.name = locationRecord.Name;
         locinf.redScore = Integer.valueOf(locationRecord.Red_Score__c);
         locinf.statusUpdatedOn = locationRecord.Status_Update_Date__c;
+        locinf.status = locationRecord.Status__c;
     }
    
     List<Location_Tracing__c> traces = CTLocationTractingController.getVisitors(recordId);
@@ -39,6 +40,8 @@ public with sharing class CTLocationTabController {
        public Integer redScore;
        @AuraEnabled
        public Date statusUpdatedOn;
+       @AuraEnabled
+       public String status;
        @AuraEnabled
        public Integer contactsCount = 0;
        @AuraEnabled

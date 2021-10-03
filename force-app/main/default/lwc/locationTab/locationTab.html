@@ -1,10 +1,51 @@
 <template>
     <div class="main-container">
         <div class="search-panel">
-            <lightning-input type="text" variant="label-hidden"></lightning-input>
-            <lightning-button label="Search Location" title="Search Location" onclick={handleClick}
+            <lightning-input type="text" variant="label-hidden" placeholder="Type Location id here...">
+            </lightning-input>
+            <lightning-button label="Search Location" title="Search Location" onclick={handleSearch}
                 class="slds-m-left_x-small">
             </lightning-button>
         </div>
+        <template if:true={locationinfo}>
+            <div class="card-container slds-align_absolute-center">
+                <div class="header-panel">
+                    <div class={headerClass}>
+                        {locationinfo.name}, is in {locationinfo.status} Status
+                    </div>
+                </div>
+                <div class="sub-header-panel">
+                    <div class="subheader-row">
+                        <div class="row-item">
+                            <div class="row-item-label slds-text-title">
+                                Red Score
+                            </div>
+                            <div class="row-item-value">
+                                {locationinfo.redScore}
+                            </div>
+                        </div>
+
+                        <div class="row-item">
+                            <div class="row-item-label slds-text-title">
+                                Contacts in Last 30 Days
+                            </div>
+                            <div class="row-item-value">
+                                {locationinfo.contactsCount}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="slds-text-heading_medium slds-p-left_xx-small slds-p-bottom--medium">
+                        Recent Visitors
+                    </div>
+                    <div class="contacts">
+                        <lightning-datatable key-field="id" data={locationinfo.contacts} columns={columns}
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                    </div>
+                </div>
+            </div>
+        </template>
     </div>
 </template>
