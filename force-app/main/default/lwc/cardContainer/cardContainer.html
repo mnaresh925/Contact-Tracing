@@ -1,0 +1,32 @@
+<template>
+    <div class="card-container slds-align_absolute-center">
+        <div class="header-panel">
+            <div class={header.class}>
+                {header.text}
+            </div>
+        </div>
+        <div class="sub-header-panel">
+            <div class="subheader-row">
+                <template for:each={subheader} for:item="sub">
+                    <div class="row-item" key={sub.label}>
+                        <div class="row-item-label slds-text-title">
+                            {sub.label}
+                        </div>
+                        <div class="row-item-value">
+                            {sub.value}
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <div class="body">
+                <div class="slds-text-heading_medium slds-p-left_xx-small slds-p-bottom--medium">
+                    {body.header}
+                </div>
+                <div class="contacts">
+                    <lightning-datatable key-field="id" data={body.data} columns={body.columns} hide-checkbox-column>
+                    </lightning-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

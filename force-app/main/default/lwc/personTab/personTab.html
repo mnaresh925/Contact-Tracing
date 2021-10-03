@@ -4,7 +4,7 @@
             onsearch={handleSearch}>
         </c-search-panel>
         <template if:true={userInfo}>
-
+            <c-card-container header={headerInfo} subheader={subheaderInfo} body={body}></c-card-container>
         </template>
     </div>
 </template>
