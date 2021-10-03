@@ -1,0 +1,13 @@
+.main-container {
+    margin: -12px;
+    height: 100%;
+    background: white;
+    position: fixed;
+    width: 100%;
+}
+.search-panel {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem 1rem 2rem 1rem;
+    background: lightblue;
+}
