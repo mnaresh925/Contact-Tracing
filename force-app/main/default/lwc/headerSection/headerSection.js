@@ -6,15 +6,13 @@ export default class HeaderSection extends LightningElement {
     headerTitle;
     @track
     healthStatus = [];
-    connectedCallback() {
-        this.getPersonHealthStatus();
-    }
 
-    getPersonHealthStatus() {
-        getHealthStatusCount().then(response => {
+    @api
+    getHealthStatus() {
+        this.healthStatus = [];
+        getHealthStatusCount({ statusType: this.headerTitle }).then(response => {
             this.prepareData(response);
         }).catch(error => console.log("Error in fetching Person Health Status Count" + error));
-
     }
 
     prepareData(data) {

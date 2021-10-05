@@ -5,7 +5,8 @@ export default class HealthAdminTab extends LightningElement {
 
     handleActive(event) {
         this.headerTitle = event.target.value;
-        const selectedViewEvent = new CustomEvent("selectedView", { detail: this.headerTitle });
-        this.dispatchEvent(selectedViewEvent);
+        this.template.querySelector('c-header-section').getHealthStatus();
+        // const selectedViewEvent = new CustomEvent("selectedView", { detail: this.headerTitle });
+        // this.dispatchEvent(selectedViewEvent);
     }
 }
