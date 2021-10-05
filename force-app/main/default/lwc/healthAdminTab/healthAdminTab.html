@@ -1,40 +1,11 @@
 <template>
-    <div class="slds-page-header slds-page-header_record-home">
-        <div class="slds-page-header__row">
-            <div class="slds-page-header__col-title">
-                <div class="slds-media">
-                    <div class="slds-media__figure">
-                        <span class="slds-icon_container slds-icon-standard-opportunity">
-                            <lightning-icon icon-name="standard:queue" alternative-text="Contact Tracing"
-                                title="Contact Tracing">
-                            </lightning-icon>
-                        </span>
-                    </div>
-                    <div class="slds-media__body">
-                        <div class="slds-page-header__name">
-                            <div class="slds-page-header__name-title">
-                                <h1>
-                                    <span>Contact Tracing</span>
-                                    <span class="slds-page-header__title slds-truncate"
-                                        title={headerTitle}>{headerTitle}</span>
-                                </h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="slds-page-header__col-actions">
-                <div class="slds-page-header__controls">
-                    <div class="slds-page-header__control">
-                        <ul class="slds-button-group-list">
-                            <li>
-                                <button class="slds-button slds-button_neutral" onclick={createRecord}>Add
-                                    New</button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <c-header-section header-title={headerTitle}></c-header-section>
+    <lightning-tabset variant="vertical">
+        <lightning-tab label="Person View" value="Person View" onactive={handleActive}>
+            Person View
+        </lightning-tab>
+        <lightning-tab label="Location View" value="Location View" onactive={handleActive}>
+            Location View
+        </lightning-tab>
+    </lightning-tabset>
 </template>
