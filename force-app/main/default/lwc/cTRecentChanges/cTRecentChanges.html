@@ -1,7 +1,12 @@
 <template>
-    <lightning-card title="Recent Updates">
-        <lightning-datatable key-field="id" data={data} columns={columns} hide-checkbox-column
-            onrowaction={handleRowAction}>
-        </lightning-datatable>
-    </lightning-card>
+    <div>
+        <lightning-card title="Recent Updates">
+            <lightning-input slot="actions" name="search" label="Hit 'enter' to search" is-loading={issearching}
+                type="search" placeholder="Search here..."></lightning-input>
+            <lightning-datatable key-field="id" data={data} columns={columns} hide-checkbox-column
+                onrowaction={handleRowAction}>
+            </lightning-datatable>
+        </lightning-card>
+    </div>
+
 </template>

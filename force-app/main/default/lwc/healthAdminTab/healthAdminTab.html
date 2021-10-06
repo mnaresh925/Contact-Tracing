@@ -12,12 +12,14 @@
             </lightning-layout>
         </lightning-tab>
         <lightning-tab label="Location View" value="Location View" onactive={handleActive}>
-            <lightning-layout-item size="8" padding="horizontal-small">
-                <c-c-t-recent-changes view="location"></c-c-t-recent-changes>
-            </lightning-layout-item>
-            <lightning-layout-item size="4" padding="horizontal-small">
-                Location View Card Goes Here
-            </lightning-layout-item>
+            <lightning-layout>
+                <lightning-layout-item size="8" padding="horizontal-small">
+                    <c-c-t-recent-changes view="location"></c-c-t-recent-changes>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" padding="horizontal-small">
+                    Location View Card Goes Here
+                </lightning-layout-item>
+            </lightning-layout>
         </lightning-tab>
     </lightning-tabset>
 </template>
