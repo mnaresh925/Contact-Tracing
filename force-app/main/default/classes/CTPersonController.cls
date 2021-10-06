@@ -9,6 +9,7 @@ public with sharing class CTPersonController {
     /**
      * return first 100 person records sorted by status updated date in desc order
      */
+    @AuraEnabled
     public static List<Person__c> getRecentHealthChanges() {
         return [SELECT Id, Name, Health_Status__c, Mobile__c, Status_Update_Date__c, Token__c 
                 FROM Person__c 

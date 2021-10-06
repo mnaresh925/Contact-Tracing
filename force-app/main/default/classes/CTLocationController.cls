@@ -2,6 +2,7 @@ public with sharing class CTLocationController {
      /**
      * return first 100 Location records sorted by status updated date in desc order
      */
+    @AuraEnabled
     public static List<Location__c> getRecentStatusChanges() {
         return [SELECT Id, Name, City__c, Country__c, Land_Mark__c, 
                         Postal_Code__c, State__c, Street__c, Verified__c,
