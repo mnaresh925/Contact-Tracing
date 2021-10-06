@@ -8,9 +8,9 @@ export default class HeaderSection extends LightningElement {
     healthStatus = [];
 
     @api
-    getHealthStatus() {
+    getHealthStatus(title) {
         this.healthStatus = [];
-        getHealthStatusCount({ statusType: this.headerTitle }).then(response => {
+        getHealthStatusCount({ statusType: title }).then(response => {
             this.prepareData(response);
         }).catch(error => console.log("Error in fetching Person Health Status Count" + error));
     }
