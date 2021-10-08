@@ -1,7 +1,9 @@
-import { api, LightningElement } from 'lwc';
+import { api, LightningElement, wire } from 'lwc';
 import getRecentHealthChanges from '@salesforce/apex/CTPersonController.getRecentHealthChanges';
 import getRecentStatusChanges from '@salesforce/apex/CTLocationController.getRecentStatusChanges';
 
+import { publish, MessageContext } from 'lightning/messageService';
+import ViewSelectedRecord from '@salesforce/messageChannel/ViewSelectedRecord__c';
 
 const locationColumns = [
     { label: "Name", fieldName: "Name", type: "text" },
@@ -27,6 +29,9 @@ export default class CTRecentChanges extends LightningElement {
     columns;
     data = [];
 
+    @wire(MessageContext)
+    messageContext;
+
     connectedCallback() {
         if (this.view == 'person') {
             this.columns = personColumns;
@@ -48,13 +53,11 @@ export default class CTRecentChanges extends LightningElement {
         switch (action.name) {
             case 'view_details':
                 console.log('Showing Details: ' + JSON.stringify(row));
-                const viewRecordEvent = new CustomEvent("viewrecord", {
-                    detail: {
-                        'recordId': row.Id,
-                        'status': (this.view == 'person') ? row.Health_Status__c : row.Status__c
-                    }
-                });
-                this.dispatchEvent(viewRecordEvent);
+                const payLoad = {
+                    'recordId': row.Id,
+                    'status': (this.view == 'person') ? row.Health_Status__c : row.Status__c
+                };
+                publish(this.messageContext, ViewSelectedRecord, payLoad);
                 break;
         }
     }
