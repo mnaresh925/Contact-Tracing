@@ -48,7 +48,7 @@ export default class CTRecentChanges extends LightningElement {
         switch (action.name) {
             case 'view_details':
                 console.log('Showing Details: ' + JSON.stringify(row));
-                const viewRecordEvent = new CustomEvent("viewRecord", {
+                const viewRecordEvent = new CustomEvent("viewrecord", {
                     detail: {
                         'recordId': row.Id,
                         'status': (this.view == 'person') ? row.Health_Status__c : row.Status__c
