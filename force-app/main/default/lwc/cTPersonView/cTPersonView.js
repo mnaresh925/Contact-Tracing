@@ -6,7 +6,7 @@ import HEALTH_STATUS_FIELD from '@salesforce/schema/Person__c.Health_Status__c';
 import STATUS_UPDATE_DATE_FIELD from '@salesforce/schema/Person__c.Status_Update_Date__c';
 
 import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
-import ViewSelectedRecord from '@salesforce/messageChannel/ViewSelectedRecord__c';
+import ViewPersonRecord from '@salesforce/messageChannel/ViewPersonRecord__c';
 
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
@@ -23,7 +23,7 @@ export default class CTPersonView extends LightningElement {
         if (!this.subscription) {
             this.subscription = subscribe(
                 this.messageContext,
-                ViewSelectedRecord,
+                ViewPersonRecord,
                 (message) => this.handleMessage(message)
             );
         }
