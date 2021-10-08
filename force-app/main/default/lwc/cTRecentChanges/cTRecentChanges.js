@@ -4,6 +4,7 @@ import getRecentStatusChanges from '@salesforce/apex/CTLocationController.getRec
 
 import { publish, MessageContext } from 'lightning/messageService';
 import ViewSelectedRecord from '@salesforce/messageChannel/ViewSelectedRecord__c';
+import ViewLocationRecord from '@salesforce/messageChannel/ViewLocationRecord__c';
 
 const locationColumns = [
     { label: "Name", fieldName: "Name", type: "text" },
@@ -57,7 +58,8 @@ export default class CTRecentChanges extends LightningElement {
                     'recordId': row.Id,
                     'status': (this.view == 'person') ? row.Health_Status__c : row.Status__c
                 };
-                publish(this.messageContext, ViewSelectedRecord, payLoad);
+                const event = (this.view == 'person') ? ViewSelectedRecord : ViewLocationRecord;
+                publish(this.messageContext, event, payLoad);
                 break;
         }
     }
