@@ -1,7 +1,7 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, track } from 'lwc';
 
 export default class HealthAdminTab extends LightningElement {
-    headerTitle;
+    @track headerTitle;
 
     handleActive(event) {
         this.headerTitle = event.target.value;

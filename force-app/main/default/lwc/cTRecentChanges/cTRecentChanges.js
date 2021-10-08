@@ -1,6 +1,7 @@
 import { api, LightningElement } from 'lwc';
 import getRecentHealthChanges from '@salesforce/apex/CTPersonController.getRecentHealthChanges';
-import getRecentStatusChanges from '@salesforce/apex/CTLocationController.getRecentStatusChanges'
+import getRecentStatusChanges from '@salesforce/apex/CTLocationController.getRecentStatusChanges';
+
 
 const locationColumns = [
     { label: "Name", fieldName: "Name", type: "text" },
@@ -46,7 +47,14 @@ export default class CTRecentChanges extends LightningElement {
         const row = event.detail.row;
         switch (action.name) {
             case 'view_details':
-                alert('Showing Details: ' + JSON.stringify(row));
+                console.log('Showing Details: ' + JSON.stringify(row));
+                const viewRecordEvent = new CustomEvent("viewRecord", {
+                    detail: {
+                        'recordId': row.Id,
+                        'status': (this.view == 'person') ? row.Health_Status__c : row.Status__c
+                    }
+                });
+                this.dispatchEvent(viewRecordEvent);
                 break;
         }
     }
