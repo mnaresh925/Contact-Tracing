@@ -3,9 +3,6 @@ import getHealthStatusCount from '@salesforce/apex/CTHealthTabController.getHeal
 import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
 import CTRefreshPage from '@salesforce/messageChannel/CTRefreshPage__c';
 import { NavigationMixin } from 'lightning/navigation';
-import Location__c from '@salesforce/schema/Attendee__ChangeEvent.Location__c';
-import Person__c from '@salesforce/schema/Location_Tracing__ChangeEvent.Person__c';
-
 export default class HeaderSection extends NavigationMixin(LightningElement) {
     @api
     headerTitle;
@@ -21,6 +18,7 @@ export default class HeaderSection extends NavigationMixin(LightningElement) {
     @api
     getHealthStatus(title) {
         this.healthStatus = [];
+        this.headerTitle = title;
         getHealthStatusCount({ statusType: title }).then(response => {
             this.prepareData(response);
         }).catch(error => console.log("Error in fetching Person Health Status Count" + error));
