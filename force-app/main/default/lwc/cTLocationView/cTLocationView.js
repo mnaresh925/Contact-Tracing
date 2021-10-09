@@ -13,6 +13,7 @@ import ViewLocationRecord from '@salesforce/messageChannel/ViewLocationRecord__c
 export default class CTLocationView extends LightningElement {
     @api recordId;
     @api objectApiName = 'Location__c';
+    status;
     fields = [NAME_FIELD, STATUS_FIELD, RED_SCORE_FIELD, PIN_FIELD, ADDRESS_FIELD, STATUS_UPDATE_DATE_FIELD];
 
     subscription = null;
@@ -32,6 +33,7 @@ export default class CTLocationView extends LightningElement {
 
     handleMessage(message) {
         this.recordId = message.recordId;
+        this.status = message.status;
     }
 
     unsubscribeToMessageChannel() {
@@ -55,6 +57,10 @@ export default class CTLocationView extends LightningElement {
                 variant: 'error'
             })
         );
+    }
+
+    get recordClass() {
+        return `recordCard ${this.status}`;
     }
 
 }

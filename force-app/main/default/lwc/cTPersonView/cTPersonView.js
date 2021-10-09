@@ -18,6 +18,7 @@ export default class CTPersonView extends LightningElement {
     @api recordId;
     @api showUpdateButton = false;
     @api objectApiName = 'Person__c';
+    status;
     fields = [NAME_FIELD, MOBILE_FIELD, TOKEN_FIELD, HEALTH_STATUS_FIELD, STATUS_UPDATE_DATE_FIELD];
     subscription = null;
 
@@ -36,6 +37,7 @@ export default class CTPersonView extends LightningElement {
 
     handleMessage(message) {
         this.recordId = message.recordId;
+        this.status = message.status;
         this.showUpdateButton = (message.status == 'Red') ? false : true;
     }
 
@@ -70,6 +72,7 @@ export default class CTPersonView extends LightningElement {
         const recordInput = { fields };
         updateRecord(recordInput).then(() => {
             this.showUpdateButton = false;
+            this.status = 'Red';
             this.dispatchEvent(new ShowToastEvent({
                 title: 'Success',
                 message: 'Person Record updated',
@@ -86,6 +89,10 @@ export default class CTPersonView extends LightningElement {
                 })
             );
         });
+    }
+
+    get recordClass() {
+        return `recordCard ${this.status}`;
     }
 
 }

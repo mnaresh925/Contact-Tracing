@@ -1,0 +1,20 @@
+.recordCard{
+    border: 1px solid #dddbda;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px #dddbda;
+}
+.Red {
+    border-top: 8px solid red;
+}
+
+.Orange {
+    border-top: 8px solid orange;
+}
+
+.Green {
+    border-top: 8px solid green;
+}
+
+.Yellow {
+    border-top: 8px solid #baba00;
+}
