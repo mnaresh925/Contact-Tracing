@@ -8,10 +8,13 @@ import STATUS_UPDATE_DATE_FIELD from '@salesforce/schema/Person__c.Status_Update
 import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
 import ViewPersonRecord from '@salesforce/messageChannel/ViewPersonRecord__c';
 
+import updateStatus from '@salesforce/apex/CTPersonViewController.updateStatus';
+
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class CTPersonView extends LightningElement {
     @api recordId;
+    @api showUpdateButton = false;
     @api objectApiName = 'Person__c';
     fields = [NAME_FIELD, MOBILE_FIELD, TOKEN_FIELD, HEALTH_STATUS_FIELD, STATUS_UPDATE_DATE_FIELD];
     subscription = null;
@@ -31,6 +34,7 @@ export default class CTPersonView extends LightningElement {
 
     handleMessage(message) {
         this.recordId = message.recordId;
+        this.showUpdateButton = (message.status == 'Red') ? false : true;
     }
 
     unsubscribeToMessageChannel() {
@@ -54,6 +58,16 @@ export default class CTPersonView extends LightningElement {
                 variant: 'error'
             })
         );
+    }
+
+    handleUpdate() {
+        updateStatus({ recordId: this.recordId })
+            .then(response => {
+                console.log(response)
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
 
