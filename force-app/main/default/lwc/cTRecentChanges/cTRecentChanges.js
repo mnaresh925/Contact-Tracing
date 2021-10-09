@@ -2,9 +2,10 @@ import { api, LightningElement, wire } from 'lwc';
 import getRecentHealthChanges from '@salesforce/apex/CTPersonController.getRecentHealthChanges';
 import getRecentStatusChanges from '@salesforce/apex/CTLocationController.getRecentStatusChanges';
 
-import { publish, MessageContext } from 'lightning/messageService';
+import { publish, MessageContext, subscribe, unsubscribe } from 'lightning/messageService';
 import ViewPersonRecord from '@salesforce/messageChannel/ViewPersonRecord__c';
 import ViewLocationRecord from '@salesforce/messageChannel/ViewLocationRecord__c';
+import CTRefreshPage from '@salesforce/messageChannel/CTRefreshPage__c';
 
 const locationColumns = [
     { label: "Name", fieldName: "Name", type: "text" },
@@ -29,11 +30,17 @@ export default class CTRecentChanges extends LightningElement {
     view;
     columns;
     data = [];
+    subscription = null;
 
     @wire(MessageContext)
     messageContext;
 
     connectedCallback() {
+        this.prepareData();
+        this.subscribeToMessageChannel();
+    }
+
+    prepareData() {
         if (this.view == 'person') {
             this.columns = personColumns;
             getRecentHealthChanges().then(response => {
@@ -46,6 +53,29 @@ export default class CTRecentChanges extends LightningElement {
                 this.data = response;
             }).catch(error => console.log("error in fetching results" + error));
         }
+    }
+
+    subscribeToMessageChannel() {
+        if (!this.subscription) {
+            this.subscription = subscribe(
+                this.messageContext,
+                CTRefreshPage,
+                () => this.handleMessage()
+            );
+        }
+    }
+
+    handleMessage() {
+        this.prepareData();
+    }
+
+    unsubscribeToMessageChannel() {
+        unsubscribe(this.subscription);
+        this.subscription = null;
+    }
+
+    disconnectedCallback() {
+        this.unsubscribeToMessageChannel();
     }
 
     handleRowAction(event) {
