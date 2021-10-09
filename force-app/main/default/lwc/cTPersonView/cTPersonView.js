@@ -6,8 +6,9 @@ import HEALTH_STATUS_FIELD from '@salesforce/schema/Person__c.Health_Status__c';
 import STATUS_UPDATE_DATE_FIELD from '@salesforce/schema/Person__c.Status_Update_Date__c';
 import ID_FIELD from '@salesforce/schema/Person__c.Id';
 
-import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
+import { subscribe, unsubscribe, MessageContext, publish } from 'lightning/messageService';
 import ViewPersonRecord from '@salesforce/messageChannel/ViewPersonRecord__c';
+import CTRefreshPage from '@salesforce/messageChannel/CTRefreshPage__c';
 
 import { updateRecord } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex';
@@ -73,6 +74,7 @@ export default class CTPersonView extends LightningElement {
         updateRecord(recordInput).then(() => {
             this.showUpdateButton = false;
             this.status = 'Red';
+            publish(this.messageContext, CTRefreshPage);
             this.dispatchEvent(new ShowToastEvent({
                 title: 'Success',
                 message: 'Person Record updated',

@@ -1,11 +1,19 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api, track, wire } from 'lwc';
 import getHealthStatusCount from '@salesforce/apex/CTHealthTabController.getHealthStatusCount';
+import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
+import CTRefreshPage from '@salesforce/messageChannel/CTRefreshPage__c';
 
 export default class HeaderSection extends LightningElement {
     @api
     headerTitle;
     @track
     healthStatus = [];
+
+    subscription = null;
+
+    @wire(MessageContext)
+    messageContext;
+
 
     @api
     getHealthStatus(title) {
@@ -24,5 +32,44 @@ export default class HeaderSection extends LightningElement {
             });
         }
     }
+
+    subscribeToMessageChannel() {
+        if (!this.subscription) {
+            this.subscription = subscribe(
+                this.messageContext,
+                CTRefreshPage,
+                () => this.handleMessage()
+            );
+        }
+    }
+
+    handleMessage() {
+        this.getHealthStatus(this.headerTitle);
+    }
+
+    unsubscribeToMessageChannel() {
+        unsubscribe(this.subscription);
+        this.subscription = null;
+    }
+
+    connectedCallback() {
+        this.subscribeToMessageChannel();
+    }
+
+    disconnectedCallback() {
+        this.unsubscribeToMessageChannel();
+    }
+
+    dispatchToast(error) {
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: 'Error loading person',
+                message: reduceErrors(error).join(', '),
+                variant: 'error'
+            })
+        );
+    }
+
+
 
 }
