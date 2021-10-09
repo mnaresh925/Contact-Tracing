@@ -4,11 +4,13 @@ import MOBILE_FIELD from '@salesforce/schema/Person__c.Mobile__c';
 import TOKEN_FIELD from '@salesforce/schema/Person__c.Token__c';
 import HEALTH_STATUS_FIELD from '@salesforce/schema/Person__c.Health_Status__c';
 import STATUS_UPDATE_DATE_FIELD from '@salesforce/schema/Person__c.Status_Update_Date__c';
+import ID_FIELD from '@salesforce/schema/Person__c.Id';
 
 import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
 import ViewPersonRecord from '@salesforce/messageChannel/ViewPersonRecord__c';
 
-import updateStatus from '@salesforce/apex/CTPersonViewController.updateStatus';
+import { updateRecord } from 'lightning/uiRecordApi';
+import { refreshApex } from '@salesforce/apex';
 
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
@@ -61,14 +63,29 @@ export default class CTPersonView extends LightningElement {
     }
 
     handleUpdate() {
-        updateStatus({ recordId: this.recordId })
-            .then(response => {
-                console.log(response)
+        debugger
+        const fields = {};
+        fields[ID_FIELD.fieldApiName] = this.recordId;
+        fields[HEALTH_STATUS_FIELD.fieldApiName] = 'Red';
+        const recordInput = { fields };
+        updateRecord(recordInput).then(() => {
+            this.showUpdateButton = false;
+            this.dispatchEvent(new ShowToastEvent({
+                title: 'Success',
+                message: 'Person Record updated',
+                variant: 'success'
             })
-            .catch(error => {
-                console.log(error);
-            });
+            );
+            return refreshApex(this.Person__c);
+        }).catch(error => {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error in Updating record',
+                    message: error.body.message,
+                    variant: 'error'
+                })
+            );
+        });
     }
-
 
 }
