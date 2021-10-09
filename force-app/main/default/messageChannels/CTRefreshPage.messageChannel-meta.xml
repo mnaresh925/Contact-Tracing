@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>CTRefreshPage</masterLabel>
+    <isExposed>true</isExposed>
+    <description>This is a refresh Page Lightning Message Channel.</description>
+</LightningMessageChannel>
