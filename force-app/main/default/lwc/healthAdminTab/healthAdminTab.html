@@ -1,13 +1,17 @@
 <template>
     <div class="container">
+        <!--Top Section-->
         <c-header-section header-title={headerTitle}></c-header-section>
+        <!--Side menu Section-->
         <lightning-tabset variant="vertical">
             <lightning-tab label="Person View" value="Person View" onactive={handleActive}>
                 <lightning-layout>
                     <lightning-layout-item size="8" padding="horizontal-small">
+                        <!--Person List Section-->
                         <c-c-t-recent-changes view="person"></c-c-t-recent-changes>
                     </lightning-layout-item>
                     <lightning-layout-item size="4" padding="horizontal-small">
+                        <!--Person record Section-->
                         <c-c-t-person-view></c-c-t-person-view>
                     </lightning-layout-item>
                 </lightning-layout>
@@ -15,14 +19,15 @@
             <lightning-tab label="Location View" value="Location View" onactive={handleActive}>
                 <lightning-layout>
                     <lightning-layout-item size="8" padding="horizontal-small">
+                        <!--Location List Section-->
                         <c-c-t-recent-changes view="location"></c-c-t-recent-changes>
                     </lightning-layout-item>
                     <lightning-layout-item size="4" padding="horizontal-small">
+                        <!--Location record Section-->
                         <c-c-t-location-view></c-c-t-location-view>
                     </lightning-layout-item>
                 </lightning-layout>
             </lightning-tab>
         </lightning-tabset>
     </div>
-
 </template>
