@@ -2,8 +2,11 @@ import { LightningElement, api, track, wire } from 'lwc';
 import getHealthStatusCount from '@salesforce/apex/CTHealthTabController.getHealthStatusCount';
 import { subscribe, unsubscribe, MessageContext } from 'lightning/messageService';
 import CTRefreshPage from '@salesforce/messageChannel/CTRefreshPage__c';
+import { NavigationMixin } from 'lightning/navigation';
+import Location__c from '@salesforce/schema/Attendee__ChangeEvent.Location__c';
+import Person__c from '@salesforce/schema/Location_Tracing__ChangeEvent.Person__c';
 
-export default class HeaderSection extends LightningElement {
+export default class HeaderSection extends NavigationMixin(LightningElement) {
     @api
     headerTitle;
     @track
@@ -68,6 +71,20 @@ export default class HeaderSection extends LightningElement {
                 variant: 'error'
             })
         );
+    }
+
+    createRecord() {
+        const objectApiName = (this.headerTitle == 'Person View') ? 'Person__c' : 'Location__c';
+        this[NavigationMixin.Navigate]({
+            type: 'standard__objectPage',
+            attributes: {
+                objectApiName: objectApiName,
+                actionName: 'new'
+            },
+            state: {
+                navigationLocation: 'RELATED_LIST'
+            }
+        });
     }
 
 
