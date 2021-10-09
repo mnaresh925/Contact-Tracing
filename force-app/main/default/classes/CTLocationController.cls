@@ -17,6 +17,7 @@ public with sharing class CTLocationController {
      * return Location records that matches the searchteam(Name,pincode or address)
      * sorted by status updated date in desc order
      */
+    @AuraEnabled
     public static List<Location__c> searchLocations(String searchTerm){
         searchTerm = searchTerm + '%';
         return [SELECT Id, Name, City__c, Country__c, Land_Mark__c, 

@@ -22,6 +22,7 @@ public with sharing class CTPersonController {
      * return person records that matches the searchteam(Name,Mobile or Token)
      * sorted by status updated date in desc order
      */
+    @auraEnabled
     public static List<Person__c> searchPeople(String searchTerm){
         searchTerm = searchTerm + '%';
         return [SELECT Id, Name, Health_Status__c, Mobile__c, Status_Update_Date__c, Token__c 

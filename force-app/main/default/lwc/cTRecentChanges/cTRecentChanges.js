@@ -1,6 +1,9 @@
 import { api, LightningElement, wire } from 'lwc';
 import getRecentHealthChanges from '@salesforce/apex/CTPersonController.getRecentHealthChanges';
 import getRecentStatusChanges from '@salesforce/apex/CTLocationController.getRecentStatusChanges';
+import searchPeople from '@salesforce/apex/CTPersonController.searchPeople';
+import searchLocations from '@salesforce/apex/CTLocationController.searchLocations';
+
 
 import { publish, MessageContext, subscribe, unsubscribe } from 'lightning/messageService';
 import ViewPersonRecord from '@salesforce/messageChannel/ViewPersonRecord__c';
@@ -14,7 +17,7 @@ const locationColumns = [
     { label: "Pincode", fieldName: "Pincode__c", type: "text" },
     { label: "Address", fieldName: "Address__c", type: "text" },
     { label: "Status Update Date", fieldName: "Status_Update_Date__c", type: "date" },
-    { label: "View", type: "button", initialWidth: 135, typeAttributes: { label: "View/Update", name: "view_details", title: "Click to View Details" } }
+    { label: "View", type: "button", initialWidth: 135, typeAttributes: { label: "View", name: "view_details", title: "Click to View Details" } }
 ];
 const personColumns = [
     { label: "Name", fieldName: "Name", type: "text" },
@@ -91,6 +94,27 @@ export default class CTRecentChanges extends LightningElement {
                 const event = (this.view == 'person') ? ViewPersonRecord : ViewLocationRecord;
                 publish(this.messageContext, event, payLoad);
                 break;
+        }
+    }
+
+    handleKeyUp(event) {
+        const isEnterkey = event.keyCode === 13;
+        if (isEnterkey) {
+            const value = event.target.value;
+            if (!value) {
+                this.prepareData();
+            } else {
+                if (this.view == 'person') {
+                    searchPeople({ searchTerm: value }).then(response => {
+                        this.data = response;
+                    }).catch(error => console.log("error in fetching results" + error));
+                } else {
+                    searchLocations({ searchTerm: value }).then(response => {
+                        this.data = response;
+                    }).catch(error => console.log("error in fetching results" + error));
+                }
+            }
+
         }
     }
 }
