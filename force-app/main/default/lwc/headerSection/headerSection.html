@@ -37,18 +37,30 @@
             </div>
         </div>
 
+        <!--Markup to show the HealthStatus counts-->
         <div class="slds-page-header__row">
             <div class="slds-page-header__col-details">
                 <ul class="slds-page-header__detail-row">
-                    <template for:each={healthStatus} for:item=hs>
-                        <li class="slds-page-header__detail-block" key={hs.key}>
-                            <div class={hs.class} title={hs.key}>{hs.key}</div>
-                            <div class={hs.class} title="">{hs.value}</div>
+                    <template if:true={healthStatusCount}>
+                        <li class="slds-page-header__detail-block">
+                            <div class="Green" title="Green">Green</div>
+                            <div class="Green" title="">{healthStatusCount.Green}</div>
+                        </li>
+                        <li class="slds-page-header__detail-block">
+                            <div class="Yellow" title="Yellow">Yellow</div>
+                            <div class="Yellow" title="">{healthStatusCount.Yellow}</div>
+                        </li>
+                        <li class="slds-page-header__detail-block">
+                            <div class="Orange" title="Orange">Orange</div>
+                            <div class="Orange" title="">{healthStatusCount.Orange}</div>
+                        </li>
+                        <li class="slds-page-header__detail-block">
+                            <div class="Red" title="Red">Red</div>
+                            <div class="Red" title="">{healthStatusCount.Red}</div>
                         </li>
                     </template>
                 </ul>
             </div>
         </div>
-
     </div>
 </template>
